@@ -129,7 +129,9 @@ static DEFINE_PER_CPU(struct ip_cpu_info, ip_info);
 
 #define CAPACITY_RESERVE	50
 
-#if defined(CONFIG_ARCH_APQ8084) || defined(CONFIG_ARM64)
+#if defined(CONFIG_SOC_EXYNOS7580)
+#define THREAD_CAPACITY (500 - CAPACITY_RESERVE)
+#elif defined(CONFIG_ARCH_APQ8084) || defined(CONFIG_ARM64)
 #define THREAD_CAPACITY (430 - CAPACITY_RESERVE)
 #elif defined(CONFIG_ARCH_MSM8960) || defined(CONFIG_ARCH_APQ8064) || \
 defined(CONFIG_ARCH_MSM8974)
@@ -558,7 +560,7 @@ int __init lazyplug_init(void)
 {
 	int rc;
 
-	nr_possible_cores = num_possible_cpus();
+	nr_possible_cores = 8;
 
 	pr_info("lazyplug: version %d.%d by arter97\n"
 		"          based on intelli_plug by faux123\n",
