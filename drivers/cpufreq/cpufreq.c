@@ -1164,8 +1164,19 @@ static int __cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif
 		wait_for_completion(cmp);
 		pr_debug("wait complete\n");
 
-		if (cpufreq_driver->exit)
-			cpufreq_driver->exit(data);
+		/* Remove policy from list of active policies */
+		write_lock_irqsave(&cpufreq_driver_lock, flags);
+		list_del(&policy->policy_list);
+		write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+
+		if (!cpufreq_suspended) {
+			flush_work(&policy->update);
+			cpufreq_policy_free(policy);
+		}
+	} else if (has_target()) {
+		ret = __cpufreq_governor(policy, CPUFREQ_GOV_START);
+		if (!ret)
+			ret = __cpufreq_governor(policy, CPUFREQ_GOV_LIMITS);
 
 		free_cpumask_var(data->related_cpus);
 		free_cpumask_var(data->cpus);
