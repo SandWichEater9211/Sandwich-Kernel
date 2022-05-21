@@ -917,13 +917,18 @@ static int exynos_cpufreq_init(struct cpufreq_policy *policy)
 	policy->cpuinfo.min_freq = 400000;
 	freq_table[cur_cluster][13].frequency = CPUFREQ_ENTRY_INVALID;
 
-	if (samsung_rev() == EXYNOS7580_REV_0)
+	if (samsung_rev() == EXYNOS7580_REV_0) {
 		if (!support_full_frequency())
 			policy->cpuinfo.max_freq = 800000;
-		
-	/* CPU min and max freq policies upon boot */
-	policy->max = 1700000;
-	policy->min = 300000;
+		else
+			policy->cpuinfo.max_freq = 1400000;
+	} else if (soc_is_exynos7580_v1()) {
+		policy->cpuinfo.max_freq = 1500000;
+		freq_table[cur_cluster][0].frequency = CPUFREQ_ENTRY_INVALID;
+	}
+
+	if (soc_is_exynos7580_v1())
+		policy->cpuinfo.max_freq = 1500000;
 
 	cpumask_copy(policy->cpus, topology_core_cpumask(policy->cpu));
 
