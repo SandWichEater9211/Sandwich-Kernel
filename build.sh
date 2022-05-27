@@ -12,7 +12,7 @@ COSMIC_DTS=arch/arm64/boot/dts
 ########### Compiled image location #############
 COSMIC_KERNEL=$COSMIC_DIR/arch/arm64/boot/Image
 ################ Compiled dtb by  ###############
-COSMIC_DTB=$COSMIC_DIR/boot.img-dtb
+COSMIC_DTB=$COSMIC_DIR/boot.img-dt
 ################## Thread count #################
 COSMIC_JOBS=$((`nproc`-1))
 ################## Target ARCH ##################
