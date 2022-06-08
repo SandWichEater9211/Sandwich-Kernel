@@ -387,6 +387,8 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fdiagnostics-show-option -Werror \
 		   -std=gnu89
 
+KBUILD_CLFAGS += -floop-nest-optimize -fgraphite-identity -ftree-loop-distribution
+
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
